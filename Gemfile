@@ -12,6 +12,9 @@ gem "dalli", "2.7.8"
 # Platform
 gem "rake", "12.3.1"
 
+# CDN
+gem "sass", "3.4.22"
+
 # Database
 gem "pg", "0.21.0"
 gem "sequel", "5.0.0"

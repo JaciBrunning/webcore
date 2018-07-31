@@ -1,5 +1,7 @@
 require 'bundler/setup'
 
+Rake.add_rakelib 'modules/cdn'
+
 namespace :db do
     desc "Run Migrations"
     task :migrate do

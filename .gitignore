@@ -6,3 +6,4 @@ Gemfile.lock
 .vs/
 
 node_modules
+build
