@@ -18,12 +18,6 @@ gem "sequel", "5.0.0"
 gem "bcrypt", "3.1.11"
 gem "aescrypt", "1.0.0"
 
-# Jekyll
-gem "jekyll", "3.5.2"
-gem "jekyll-paginate", "1.1.0"
-gem "kramdown", "1.15.0"
-gem "rouge", "1.11.1"
-
 # Misc
 gem "json", "2.0.4"
 gem "babel-transpiler", "0.7.0"

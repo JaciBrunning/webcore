@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'sinatra/reloader'
 
 module Webcore
     class App < Sinatra::Base
