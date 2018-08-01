@@ -2,6 +2,9 @@ require 'bundler/setup'
 
 Rake.add_rakelib 'modules/cdn'
 
+task :build => ["cdn:build"]
+task :clean => ["cdn:clean"]
+
 namespace :db do
     desc "Run Migrations"
     task :migrate do
