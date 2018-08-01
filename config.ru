@@ -9,8 +9,7 @@ WEBROOT = File.dirname(__FILE__)
 
 WEBCORE = Webcore::Webcore.new WEBROOT, "test.imjac.in"
 
-SEARCHPATHS = [ "#{WEBROOT}/modules", ".", "~/webcore/modules"] + (ENV["WEBCORE_MODULE_PATH"] || "").split(";")
-LOADER = Webcore::Loader.new(SEARCHPATHS)
+LOADER = Webcore::Loader.new
 
 LOADER.run! WEBCORE
 
