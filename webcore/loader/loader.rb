@@ -51,7 +51,7 @@ module Webcore
         end
 
         def run_configs!
-            configure(discover(cfiles))
+            configure(discover)
         end
 
         def run! webcore
