@@ -6,8 +6,8 @@ After=postgresql.service
 WorkingDirectory=/etc/www/webcore
 Environment="WEBCORE_DB_URL=postgres://web:web@localhost/web"
 Environemnt="RACK_ENV=production"
-ExecStartPre=/bin/sleep 1
-ExecStart=/usr/bin/authbind --deep `/usr/share/rvm/bin/rvm gemdir`/wrappers/rackup -p 80
+ExecStartPre=/bin/sleep 1 && source /etc/profile.d/rvm.sh
+ExecStart=/usr/bin/authbind --deep `rvm gemdir`/wrappers/rackup -p 80
 Type=simple
 User=www
 Group=www

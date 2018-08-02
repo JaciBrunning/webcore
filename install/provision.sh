@@ -42,9 +42,9 @@ cat <<EOM > /etc/www/sudoers
 %www ALL=NOPASSWD:/bin/systemctl start webcore.service
 
 %www-deploy ALL=NOPASSWD:/usr/bin/apt-get
-%www-deploy ALL=NOPASSWD:/bin/systemctl link
+%www-deploy ALL=NOPASSWD:/bin/systemctl link *
+%www-deploy ALL=NOPASSWD:/bin/systemctl enable *
 %www-deploy ALL=NOPASSWD:/bin/systemctl daemon-reload
-%www-deploy ALL=NOPASSWD:/bin/systemctl enable
 EOM
 
 # Init git repo
