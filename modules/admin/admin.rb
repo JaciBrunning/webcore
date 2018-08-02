@@ -1,7 +1,7 @@
 require 'webcore/cdn/extension'
 require 'webcore/db/authextension'
 
-class TestModule < WebcoreApp()
+class AdminModule < WebcoreApp()
     register AuthExtension
     register CDNExtension
 
@@ -9,7 +9,7 @@ class TestModule < WebcoreApp()
 
     get "/?" do
         auth_su!
-        @title = "Management Console"
+        @title = "Admin Console"
         erb :index
     end
 

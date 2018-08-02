@@ -4,7 +4,9 @@ module Webcore
         attr_accessor :module
         attr_accessor :host
         attr_accessor :priority
+        attr_accessor :group
 
+        # TODO
         attr_accessor :dependsOn
         attr_accessor :mustLoadAfter
         
@@ -14,6 +16,7 @@ module Webcore
             @priority = 50
             @mustLoadAfter = []
             @dependsOn = []
+            @group = nil
         end
     end
 end
