@@ -1,0 +1,17 @@
+[Unit]
+Description=Webcore Server
+After=postgresql.service
+
+[Service]
+WorkingDirectory=/etc/www/webcore
+Environment="WEBCORE_DB_URL=postgres://web:web@localhost/web"
+Environemnt="RACK_ENV=production"
+ExecStartPre=/bin/sleep 1
+ExecStart=/usr/bin/authbind --deep `/usr/share/rvm/bin/rvm gemdir`/wrappers/rackup -p 80
+Type=simple
+User=www
+Group=www
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
