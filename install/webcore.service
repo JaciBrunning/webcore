@@ -4,7 +4,7 @@ After=postgresql.service
 
 [Service]
 WorkingDirectory=/etc/www/webcore
-Environment="WEBCORE_DB_URL=postgres://web@localhost/web"
+Environment="WEBCORE_DB_URL=postgres://web:web@localhost/web"
 Environment="RACK_ENV=production"
 # ExecStartPre=source /etc/profile.d/rvm.sh
 ExecStart=/usr/bin/authbind --deep /usr/local/rvm/gems/ruby-2.3.3/wrappers/rackup -p 80
