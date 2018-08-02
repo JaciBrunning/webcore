@@ -30,7 +30,7 @@ class SSOModule < WebcoreApp()
 
     get "/login/?" do
         @title = "Login"
-        session[:refer] = params[:refer]
+        session[:refer] = params[:refer] if params[:refer]
         redirect "/register" if Auth::User.count == 0
         erb :login
     end
@@ -38,6 +38,8 @@ class SSOModule < WebcoreApp()
     get "/logout/?" do
         Auth::deauth_single(read_token)
         delete_token
+        redirect params[:refer] if params[:refer]
+        
         redirect "/login"
     end
 

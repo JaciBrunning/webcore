@@ -4,13 +4,13 @@ require_relative 'auth'
 module Webcore
     module AuthExtension
         module Helpers
-            def redirect_login! refer
+            def auth_redirect! pagestr, refer
                 portstr = ""
                 if request.port != 80 && request.port != 443
                     portstr = ":#{request.port}"
                 end
                 # TODO: Escape
-                redirect "http://auth.#{services.webcore.rootdomain}#{portstr}/login?refer=#{refer}"
+                redirect "http://auth.#{services.webcore.rootdomain}#{portstr}/#{pagestr}?refer=#{refer}"
             end
 
             def auth?
@@ -18,7 +18,7 @@ module Webcore
             end
 
             def auth!
-                redirect_login! request.url unless auth?
+                auth_redirect! "login", request.url unless auth?
             end
 
             def auth_su?
@@ -26,7 +26,11 @@ module Webcore
             end
 
             def auth_su!
-                redirect_login! request.url unless auth_su?
+                auth_redirect! "login", request.url unless auth_su?
+            end
+
+            def logout!
+                auth_redirect! "logout", request.url
             end
         end
 
