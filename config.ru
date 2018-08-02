@@ -1,15 +1,14 @@
 require 'rack'
 $:.unshift File.dirname(__FILE__)
 
+require 'loader/loader'
 require 'webcore/webcore'
-require 'webcore/loader/loader'
 require 'webcore/routing/middleware'
 
-WEBROOT = File.dirname(__FILE__)
-
-WEBCORE = Webcore::Webcore.new WEBROOT, "test.imjac.in"
-
 LOADER = Webcore::Loader.new
+
+WEBROOT = File.dirname(__FILE__)
+WEBCORE = Webcore::Webcore.new WEBROOT, "test.imjac.in"
 
 LOADER.run! WEBCORE
 
