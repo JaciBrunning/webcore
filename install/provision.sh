@@ -42,8 +42,8 @@ cat <<EOM > /etc/www/sudoers
 %www ALL=NOPASSWD:/bin/systemctl restart webcore.service
 %www ALL=NOPASSWD:/bin/systemctl stop webcore.service
 %www ALL=NOPASSWD:/bin/systemctl start webcore.service
+%www ALL=NOPASSWD:/bin/systemctl link /etc/www/webcore/install/webcore.service
 EOM
-chown 0:0 /etc/www/sudoers
 
 # Init git repo
 rm -r /etc/www/webcore.git
@@ -99,6 +99,8 @@ EOM
 # Chown /etc/www to the correct group
 chown -R :www /etc/www/
 chmod -R g+swrx /etc/www/
+
+chown 0:0 /etc/www/sudoers
 
 # Configure authbind
 echo "Configuring Authbind..."
