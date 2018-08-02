@@ -1,5 +1,5 @@
 require 'securerandom'
-require 'datetime'
+require 'date'
 
 require_relative 'routing/domain_registry'
 require_relative 'cron/registry'
