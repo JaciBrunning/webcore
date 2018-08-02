@@ -7,7 +7,7 @@ WorkingDirectory=/etc/www/webcore
 Environment="WEBCORE_DB_URL=postgres://web:web@localhost/web"
 Environemnt="RACK_ENV=production"
 # ExecStartPre=source /etc/profile.d/rvm.sh
-ExecStart=/usr/bin/authbind --deep `/usr/local/rvm gemdir`/wrappers/rackup -p 80
+ExecStart=/usr/bin/authbind --deep /usr/local/rvm/gems/ruby-2.3.3/wrappers/rackup -p 80
 Type=simple
 User=www
 Group=www
