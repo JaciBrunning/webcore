@@ -38,8 +38,8 @@ module Webcore
         end
 
         def load_modules config_objs, webcore
-            require_relative '../module'
-            require_relative '../services'
+            require_relative '../webcore/module'
+            require_relative '../webcore/services'
 
             config_objs.map do |c|
                 services = Services.new webcore, c.id
