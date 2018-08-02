@@ -1,10 +1,11 @@
-echo "Working in: \$(pwd)"
+#!/bin/bash
+echo "Working in: $(pwd)"
 
 source /etc/profile.d/rvm.sh
-echo "Using Ruby: \$(rvm current)"
+echo "Using Ruby: $(rvm current)"
 
 echo "Installing webcore packages..."
-sudo apt-get install -y \$(cat Packages)
+sudo apt-get install -y $(cat Packages)
 
 echo "Installing webcore gems..."
 bundle update
