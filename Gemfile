@@ -23,6 +23,5 @@ gem "aescrypt", "1.0.0"
 
 # Misc
 gem "json", "2.0.4"
-gem "babel-transpiler", "0.7.0"
 gem "wisper", "2.0.0"
 gem "tzinfo", "1.2.5"
