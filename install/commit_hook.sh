@@ -14,10 +14,9 @@ echo "Webcore bootstrapped. Running commit script..."
 ruby install/commit_hook.rb
 
 echo "Writing service..."
-# cp install/webcore.service /etc/systemd/system/webcore.service
 sudo systemctl link /etc/www/webcore/install/webcore.service
+sudo systemctl daemon-reload
 
 echo "Enabling webcore service..."
-sudo systemctl daemon-reload
 sudo systemctl restart webcore.service
 sudo systemctl enable webcore.service

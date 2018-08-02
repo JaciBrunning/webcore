@@ -6,6 +6,9 @@
 echo "Deployment Account Name?"
 read ACCNAME
 
+# Create deployment group
+groupadd www-deploy
+
 # Create deployment user
 if ! id -u $ACCNAME
 then
@@ -14,21 +17,11 @@ then
 else
     echo "User exists!"
 fi
+usermod -aG www-deploy $ACCNAME
 
 # Install necessary packages
 apt-get update
 apt-get install git curl dirmngr openssh-server net-tools sudo build-essential authbind -y
-
-# Write sudoers
-if ! cat /etc/sudoers | grep -q "^$ACCNAME\s*ALL=NOPASSWD:/usr/bin/apt-get"
-then
-    echo "$ACCNAME ALL=NOPASSWD:/usr/bin/apt-get" >> /etc/sudoers
-fi
-
-if ! cat /etc/sudoers | grep -q "^#include /etc/www/sudoers"
-then
-    echo "#include /etc/www/sudoers" >> /etc/sudoers
-fi
 
 # Create www group and users
 groupadd www
@@ -37,12 +30,21 @@ usermod -aG www $ACCNAME
 
 mkdir -p /etc/www
 
-# Enable www group control of systemctl for webcore
+# Write sudoers
+if ! cat /etc/sudoers | grep -q "^#include /etc/www/sudoers"
+then
+    echo "#include /etc/www/sudoers" >> /etc/sudoers
+fi
+
 cat <<EOM > /etc/www/sudoers
 %www ALL=NOPASSWD:/bin/systemctl restart webcore.service
 %www ALL=NOPASSWD:/bin/systemctl stop webcore.service
 %www ALL=NOPASSWD:/bin/systemctl start webcore.service
-%www ALL=NOPASSWD:/bin/systemctl link /etc/www/webcore/install/webcore.service
+
+%www-deploy ALL=NOPASSWD:/usr/bin/apt-get
+%www-deploy ALL=NOPASSWD:/bin/systemctl link
+%www-deploy ALL=NOPASSWD:/bin/systemctl daemon-reload
+%www-deploy ALL=NOPASSWD:/bin/systemctl enable
 EOM
 
 # Init git repo
