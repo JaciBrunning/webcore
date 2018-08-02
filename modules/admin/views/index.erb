@@ -1,0 +1,30 @@
+<h2> Admin Panel </h2>
+
+<div class="row">
+    <div class="column">
+        <h4> Loaded Modules </h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th> Priority </th>
+                    <th> Group </th>
+                    <th> ID </th>
+                    <th> Host </th>
+                    <th> Config </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% services.webcore.modules.sort_by { |i,x| x.config.priority }.each do |id, mod| %>
+                    <tr>
+                        <td> <%= mod.config.priority %> </td>
+                        <td> <%= mod.config.group %> </td>
+                        <td> <%= id.to_s %> </td>
+                        <td> <%= mod.config.host.inspect %> </td>
+                        <td> <%= mod.config.file %> </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>
