@@ -18,6 +18,6 @@ namespace :cdn do
 
     desc "Clean CDN Resources"
     task :clean do
-        FileUtils.rm_r CDNConstants::BUILD_DIR
+        FileUtils.rm_r CDNConstants::BUILD_DIR if File.exist?(CDNConstants::BUILD_DIR)
     end
 end
