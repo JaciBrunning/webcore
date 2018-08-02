@@ -21,7 +21,7 @@ usermod -aG www-deploy $ACCNAME
 
 # Install necessary packages
 apt-get update
-apt-get install git curl dirmngr openssh-server net-tools sudo build-essential authbind -y
+apt-get install git curl dirmngr openssh-server net-tools sudo build-essential authbind postgresql -y
 
 # Create www group and users
 groupadd www
@@ -110,6 +110,12 @@ touch /etc/authbind/byport/80
 touch /etc/authbind/byport/443
 chmod 777 /etc/authbind/byport/80
 chmod 777 /etc/authbind/byport/443
+
+# Create database
+su postgres <<EOSU
+psql -c "create role web with login password 'web'"
+psql -c "create database web owner web"
+EOSU
 
 # Done!
 echo "Webcore provisioned! Push to this remote's master to run."

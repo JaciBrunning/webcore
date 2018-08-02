@@ -10,8 +10,10 @@ sudo apt-get install -y $(cat Packages)
 echo "Installing webcore gems..."
 bundle update
 
-echo "Webcore bootstrapped. Running commit script..."
-ruby install/commit_hook.rb
+echo "Webcore bootstrapped."
+
+echo "Running rake tasks..."
+rake install
 
 echo "Writing service..."
 sudo systemctl link /etc/www/webcore/install/webcore.service
