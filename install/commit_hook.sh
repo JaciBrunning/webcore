@@ -13,12 +13,6 @@ bundle update
 echo "Webcore bootstrapped. Running commit script..."
 ruby install/commit_hook.rb
 
-echo "Configuring Authbind..."
-touch /etc/authbind/byport/80
-touch /etc/authbind/byport/443
-chmod 777 /etc/authbind/byport/80
-chmod 777 /etc/authbind/byport/443
-
 echo "Writing service..."
 cp install/webcore.service /etc/systemd/system/webcore.service
 
