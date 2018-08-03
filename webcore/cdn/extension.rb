@@ -1,8 +1,8 @@
 module Webcore
     module CDNExtension
         def self.registered app
-            app.get '/cdn/:module/:resource/?' do |mod, resource|
-                mod = app.services[:modules][mod.to_sym]
+            app.get '/cdn/:module/:resource/?' do |modstr, resource|
+                mod = app.services[:modules][modstr.to_sym]
                 unless mod.nil?
                     service = mod.services[:cdn]
                     r = service[resource.to_sym]
