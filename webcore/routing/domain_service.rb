@@ -1,9 +1,12 @@
 require_relative 'domain.rb'
 
 module Webcore
-    class DomainRegistry
-        def initialize
+    class DomainService
+        attr_reader :rootdomain
+
+        def initialize rootdomain=(ENV['WEBCORE_ROOT_DOMAIN'] || "test.webcore")
             @domains = []
+            @rootdomain = rootdomain
         end
 
         def register id, domain_regex, server, priority

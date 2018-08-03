@@ -18,7 +18,7 @@ module Webcore
         end
 
         def register_domain server
-            @services.webcore.domains.register(@id, @config.host, server, @config.priority)
+            @services[:domains].register(@id, @config.host, server, @config.priority)
         end
 
         def module_file
@@ -29,5 +29,8 @@ module Webcore
             mfile = module_file
             self.instance_eval(File.read(mfile), mfile)
         end
+    end
+
+    class ModulesService < Hash
     end
 end

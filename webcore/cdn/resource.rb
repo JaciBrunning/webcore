@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'date'
 
 module Webcore
     class Resource
@@ -10,6 +11,7 @@ module Webcore
             @id = id
             @memcache = false
             @content_type = "text/plain"
+            @regtime = DateTime.now
 
             if id.to_s.end_with? ".css"
                 @content_type = "text/css"
@@ -23,7 +25,7 @@ module Webcore
         end
 
         def last_modified request, app
-            app.services.webcore.startup_time
+            @regtime
         end
 
         def construct_response content

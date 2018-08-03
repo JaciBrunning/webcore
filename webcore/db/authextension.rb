@@ -10,7 +10,7 @@ module Webcore
                     portstr = ":#{request.port}"
                 end
                 # TODO: Escape
-                redirect "http://auth.#{services.webcore.rootdomain}#{portstr}/#{pagestr}?refer=#{refer}"
+                redirect "http://auth.#{services[:domains].rootdomain}#{portstr}/#{pagestr}?refer=#{refer}"
             end
 
             def auth?
@@ -38,10 +38,10 @@ module Webcore
             app.enable :sessions
             app.helpers Sinatra::Cookies
             app.helpers ::Webcore::AuthExtension::Helpers
-            app.set :cookie_options, domain: ".#{app.services.webcore.rootdomain}"
+            app.set :cookie_options, domain: ".#{app.services[:domains].rootdomain}"
 
             app.before do
-                tok = Security.decrypt(cookies[:webcore_token], app.services.webcore.sso_secret)
+                tok = Security.decrypt(cookies[:webcore_token], app.services[:sso].secret)
                 @auth_token = Auth.login_token(tok)
                 @user = @auth_token.is_a?(Symbol) ? nil : @auth_token.user
 

@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% services.webcore.modules.sort_by { |i,x| x.config.priority }.each do |id, mod| %>
+                <% services[:modules].sort_by { |i,x| x.config.priority }.each do |id, mod| %>
                     <tr>
                         <td> <%= mod.config.priority %> </td>
                         <td> <%= mod.config.group %> </td>

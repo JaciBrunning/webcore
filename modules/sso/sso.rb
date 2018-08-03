@@ -2,21 +2,23 @@ require 'webcore/cdn/extension'
 require 'webcore/db/auth'
 require 'sinatra/cookies'
 
+require 'securerandom'
+
 # Single Sign-On Module
 class SSOModule < WebcoreApp()
     enable :sessions
     helpers Sinatra::Cookies
-    set :cookie_options, domain: ".#{services.webcore.rootdomain}"
+    set :cookie_options, domain: ".#{services[:domains].rootdomain}"
 
     register ::Webcore::CDNExtension
     set :root, File.dirname(__FILE__)
 
     def write_token tok
-        cookies[:webcore_token] = Security.encrypt(tok, services.webcore.sso_secret)
+        cookies[:webcore_token] = Security.encrypt(tok, services[:sso].secret)
     end
 
     def read_token
-        Security.decrypt(cookies[:webcore_token], services.webcore.sso_secret)
+        Security.decrypt(cookies[:webcore_token], services[:sso].secret)
     end
 
     def delete_token
@@ -69,3 +71,12 @@ class SSOModule < WebcoreApp()
         end
     end
 end
+
+class SSOService
+    attr_accessor :secret
+    def initialize
+        @secret = SecureRandom.hex(64)
+    end
+end
+
+services[:core].register :sso, SSOService.new

@@ -37,14 +37,14 @@ module Webcore
             end.reject(&:nil?)
         end
 
-        def load_modules config_objs, webcore
+        def load_modules config_objs, coreservices
             require_relative '../webcore/module'
             require_relative '../webcore/services'
 
             config_objs.map do |c|
-                services = Services.new webcore, c.id
+                services = DefaultModuleServices.new c.id, coreservices
                 mod = Module.new c, services
-                webcore.modules[c.id] = mod
+                coreservices[:modules][c.id] = mod
                 mod.load
                 puts "[LOADER] Loaded Module: #{mod.id}"
             end
@@ -54,9 +54,9 @@ module Webcore
             configure(discover)
         end
 
-        def run! webcore
+        def run! coreservices
             configs = run_configs!
-            load_modules configs, webcore
+            load_modules configs, coreservices
         end
     end
 end
