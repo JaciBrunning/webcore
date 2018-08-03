@@ -49,7 +49,7 @@ EOM
 
 # Init git repo
 rm -r /etc/www/webcore.git
-mkdir -p /etc/www/webcore.git /etc/www/webcore
+mkdir -p /etc/www/webcore.git /etc/www/webcore /etc/www/modules
 
 git init --bare /etc/www/webcore.git
 
