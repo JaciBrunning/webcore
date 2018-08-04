@@ -21,7 +21,7 @@ usermod -aG www-deploy $ACCNAME
 
 # Install necessary packages
 apt-get update
-apt-get install git curl dirmngr openssh-server net-tools sudo build-essential authbind postgresql -y
+apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql -y
 
 # Create www group and users
 groupadd www
@@ -98,18 +98,15 @@ do
 done
 EOM
 
+cat <<EOM > /etc/www/webcore.env
+RACK_ENV=production
+EOM
+
 # Chown /etc/www to the correct group
 chown -R :www /etc/www/
 chmod -R g+swrx /etc/www/
 
 chown 0:0 /etc/www/sudoers
-
-# Configure authbind
-echo "Configuring Authbind..."
-touch /etc/authbind/byport/80
-touch /etc/authbind/byport/443
-chmod 777 /etc/authbind/byport/80
-chmod 777 /etc/authbind/byport/443
 
 # Create database
 su postgres <<EOSU

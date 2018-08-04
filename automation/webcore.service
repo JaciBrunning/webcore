@@ -1,0 +1,15 @@
+[Unit]
+Description=Webcore Server
+After=postgresql.service
+
+[Service]
+WorkingDirectory=/etc/www/webcore
+EnvironmentFile=/etc/www/webcore.env
+ExecStart=/usr/local/rvm/gems/ruby-2.3.3/wrappers/rackup -o /etc/www/shared/tmp/sockets/webcore.sock
+Type=simple
+User=www
+Group=www
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

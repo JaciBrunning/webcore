@@ -25,3 +25,10 @@ gem "aescrypt", "1.0.0"
 gem "json", "2.0.4"
 gem "wisper", "2.0.0"
 gem "tzinfo", "1.2.5"
+
+# Deployment
+group :development do
+    gem 'capistrano',         require: false
+    gem 'capistrano-rvm',     require: false
+    gem 'capistrano-bundler', require: false
+end
