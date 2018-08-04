@@ -3,4 +3,8 @@ class SSOModule < WebcoreApp()
         puts "Test"
         "Hello World"
     end
+
+    not_found do
+        "Not found here!"
+    end
 end
