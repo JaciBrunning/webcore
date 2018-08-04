@@ -17,8 +17,6 @@ GEM
     capistrano-bundler (1.3.0)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-ext (1.2.1)
-      capistrano (>= 1.0.0)
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
@@ -86,7 +84,6 @@ DEPENDENCIES
   bcrypt (= 3.1.11)
   capistrano
   capistrano-bundler
-  capistrano-ext
   capistrano-rvm
   dalli (= 2.7.8)
   json (= 2.0.4)
