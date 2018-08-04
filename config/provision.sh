@@ -22,7 +22,7 @@ usermod -aG www-deploy $ACCNAME
 # Install necessary packages
 echo "Installing Packages..."
 apt-get update
-apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql -y
+apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql nginx -y
 
 # Create www group and users
 echo "Adding Users and Groups..."
