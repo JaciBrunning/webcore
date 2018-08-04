@@ -12,7 +12,10 @@ module Webcore
 
         def discover
             configs = @search_paths.map do |path|
-                Dir[File.join(path.gsub("\\", "/"), '**{,/*/**}/*.webcore.rb')]
+                puts "[LOADER] Searching Path: #{path}..."
+                f = Dir[File.join(path.gsub("\\", "/"), '**{,/*/**}/*.webcore.rb')]
+                puts " -> Found: #{f}"
+                f
             end.flatten
             configs.each do |c|
                 puts "[LOADER] Found module configuration: #{c}"
