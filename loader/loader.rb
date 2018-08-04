@@ -4,7 +4,7 @@ module Webcore
     class Loader
         attr_accessor :search_paths
 
-        DEFAULT_SEARCHPATHS = [ "#{File.dirname(__FILE__)}/../modules", ".", "~/webcore/modules"] + (ENV["WEBCORE_MODULE_PATH"] || "").split(";")
+        DEFAULT_SEARCHPATHS = [ "#{File.dirname(__FILE__)}/../modules"] + (ENV["WEBCORE_MODULE_PATH"] || "").split(";")
 
         def initialize search_paths=DEFAULT_SEARCHPATHS
             @search_paths = search_paths.map { |path| File.expand_path(path) }
