@@ -39,13 +39,21 @@ namespace :service do
     desc "Deploy Webcore Service"
     task :deploy do
         on roles(:app) do
-            service = ERB.new(File.read("#{File.dirname(__FILE__)}/webcore.service.erb")).result(binding)
+            configdir = File.dirname(__FILE__)
+            service = ERB.new(File.read("#{configdir}/webcore.service.erb")).result(binding)
             upload! StringIO.new(service), "#{shared_path}/webcore.service"
 
-            start = ERB.new(File.read("#{File.dirname(__FILE__)}/webcore.sh.erb")).result(binding)
+            start = ERB.new(File.read("#{configdir}/webcore.sh.erb")).result(binding)
             upload! StringIO.new(start), "#{shared_path}/webcore.sh"
 
+            nginx = ERB.new(File.read("#{configdir}/nginx.conf.erb")).result(binding)
+            upload! StringIO.new(nginx), "#{shared_path}/nginx.conf"
+
             execute "chmod 770 #{shared_path}/webcore.sh"
+
+            execute "rm /etc/nginx/sites-enabled/default 2> /dev/null || true"
+            execute "ln -nfs #{shared_path}/nginx.conf /etc/nginx/sites-enabled/webcore"
+
             execute "sudo systemctl link #{shared_path}/webcore.service"
             execute "sudo systemctl daemon-reload"
         end
@@ -54,10 +62,11 @@ namespace :service do
     desc "Restart Webcore Service"
     task :restart do
         on roles(:app) do
-            execute "mkdir -p #{shared_path}/tmp/sockets"
+            execute "mkdir -p #{shared_path}/tmp/sockets #{shared_path}/tmp/log"
             execute "chown -R :www #{shared_path}/tmp 2> /dev/null || true"
             execute "chmod -R 770 #{shared_path}/tmp 2> /dev/null || true"
             
+            execute "sudo systemctl restart nginx.service"
             execute "sudo systemctl restart webcore.service"
         end
     end

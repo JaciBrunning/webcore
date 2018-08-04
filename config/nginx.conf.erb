@@ -1,13 +1,13 @@
 upstream webcore {
-  server unix:///etc/www/shared/tmp/sockets/webcore.sock;
+  server unix://<%= shared_path %>/tmp/sockets/webcore.sock;
 }
 
 server {
   listen 80 default_server deferred;
   # server_name example.com;
 
-  access_log /etc/www/current/log/nginx.access.log;
-  error_log /etc/www/current/log/nginx.error.log info;
+  access_log <%= shared_path %>/tmp/log/nginx.access.log;
+  error_log <%= shared_path %>/tmp/log/nginx.error.log info;
 
   try_files $uri/index.html $uri @webcore;
   location @webcore {

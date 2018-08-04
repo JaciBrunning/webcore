@@ -40,6 +40,7 @@ then
 fi
 
 cat <<EOM > /etc/www/sudoers
+%www ALL=NOPASSWD:/bin/systemctl restart nginx.service
 %www ALL=NOPASSWD:/bin/systemctl restart webcore.service
 %www ALL=NOPASSWD:/bin/systemctl stop webcore.service
 %www ALL=NOPASSWD:/bin/systemctl start webcore.service
@@ -85,6 +86,8 @@ EOM
 echo "Ensuring file ownership..."
 chown -R :www /etc/www/
 chmod -R g+swrx /etc/www/
+chown -R :www-deploy /etc/nginx/sites-enabled/
+chmod -R g+swrx /etc/nginx/sites-enabled/
 
 chown 0:0 /etc/www/sudoers
 
