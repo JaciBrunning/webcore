@@ -3,9 +3,9 @@ Description=Webcore Server
 After=postgresql.service
 
 [Service]
-WorkingDirectory=/etc/www/webcore
+WorkingDirectory=<%= release_path %>
 EnvironmentFile=/etc/www/webcore.env
-ExecStart=/usr/local/rvm/gems/ruby-2.3.3/wrappers/rackup -o /etc/www/shared/tmp/sockets/webcore.sock
+ExecStart=<%= shared_path %>/webcore.sh
 Type=simple
 User=www
 Group=www

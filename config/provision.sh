@@ -13,17 +13,19 @@ groupadd www-deploy
 if ! id -u $ACCNAME
 then
     echo "User $ACCNAME doesn't exist. Creating..."
-    adduser $ACCNAME
+    adduser --gecos "" $ACCNAME
 else
     echo "User exists!"
 fi
 usermod -aG www-deploy $ACCNAME
 
 # Install necessary packages
+echo "Installing Packages..."
 apt-get update
 apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql -y
 
 # Create www group and users
+echo "Adding Users and Groups..."
 groupadd www
 useradd -s /usr/sbin/nologin -r -M www -g www
 usermod -aG www $ACCNAME
@@ -31,6 +33,7 @@ usermod -aG www $ACCNAME
 mkdir -p /etc/www
 
 # Write sudoers
+echo "Writing Sudoers"
 if ! cat /etc/sudoers | grep -q "^#include /etc/www/sudoers"
 then
     echo "#include /etc/www/sudoers" >> /etc/sudoers
@@ -47,15 +50,9 @@ cat <<EOM > /etc/www/sudoers
 %www-deploy ALL=NOPASSWD:/bin/systemctl daemon-reload
 EOM
 
-# Init git repo
-rm -r /etc/www/webcore.git
-mkdir -p /etc/www/webcore.git /etc/www/webcore /etc/www/modules
-
-git init --bare /etc/www/webcore.git
-
-source /etc/profile.d/rvm.sh
-
 # Check & Install RVM and Rubies
+echo "Checking RVM + Rubies..."
+source /etc/profile.d/rvm.sh
 if ! [ -f "/usr/local/rvm/bin/rvm" ]
 then
     echo "Missing RVM! Instaling..."
@@ -66,53 +63,37 @@ fi
 
 source /etc/profile.d/rvm.sh
 
-if ! rvm current | grep -q 'ruby-2.3.3'
+if ! rvm list rubies | grep -q 'ruby-2.3.3'
 then
-    echo "Changing to Ruby 2.3.3..."
+    echo "Installing Ruby 2.3.3..."
     rvm install 2.3.3
-    rvm use 2.3.3 --default
-    rvm use 2.3.3
 fi
 
-if ! gem list bundler | grep -q '^bundler\s'
-then
-    echo "Installing Bundler..."
-    gem install bundler --no-ri --no-rdoc
-fi
+# if ! gem list bundler | grep -q '^bundler\s'
+# then
+#     echo "Installing Bundler..."
+#     gem install bundler --no-ri --no-rdoc
+# fi
 
-# Write git post-receive hooks for commits
-cat <<EOM > /etc/www/webcore.git/hooks/post-receive
-#!/bin/bash
-BRANCH="master"
-
-while read oldrev newrev ref
-do
-    if [[ \$ref = refs/heads/"\$BRANCH" ]];
-    then
-        git --work-tree="/etc/www/webcore" --git-dir="/etc/www/webcore.git" checkout -f
-        pushd /etc/www/webcore
-        chmod +x install/commit_hook.sh
-        ./install/commit_hook.sh
-        popd
-    fi
-done
-EOM
-
+# Write default environment file.
+echo "Writing envfile..."
 cat <<EOM > /etc/www/webcore.env
 RACK_ENV=production
 EOM
 
 # Chown /etc/www to the correct group
+echo "Ensuring file ownership..."
 chown -R :www /etc/www/
 chmod -R g+swrx /etc/www/
 
 chown 0:0 /etc/www/sudoers
 
 # Create database
+echo "Creating Database..."
 su postgres <<EOSU
 psql -c "create role web with login password 'web'"
 psql -c "create database web owner web"
 EOSU
 
 # Done!
-echo "Webcore provisioned! Push to this remote's master to run."
+echo "Webcore provisioned! Push with Capistrano."

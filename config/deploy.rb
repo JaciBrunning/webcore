@@ -8,33 +8,59 @@ set :branch, 'master'
 
 set :user, 'deploy'
 
-# namespace :service do
-#   desc 'Create Directories for Socket'
-#   task :make_dirs do
-#     on roles(:app) do
-#       execute "mkdir #{deploy_to}/tmp/sockets -p"
-#     end
-#   end
+# Allows us to access rackup from services
+set :bundle_binstubs, -> { shared_path.join('bin') }
 
-#   before :start, :make_dirs
-# end
+namespace :deploy do
+    desc 'Install apt packages'
+    task :apt do
+        on roles(:app) do
+            within release_path do
+                execute "sudo", "apt-get install -y $(cat Packages)"
+            end
+        end
+    end
 
-# namespace :deploy do
-#   desc 'Initial Deploy'
-#   task :initial do
-#     on roles(:app) do
-#       before 'deploy:restart', 'puma:start'
-#       invoke 'deploy'
-#     end
-#   end
+    desc "Run rake tasks"
+    task :rake_install do
+        on roles(:app) do
+            within release_path do
+                execute "rake", "install"
+            end
+        end
+    end
 
-#   desc 'Restart application'
-#   task :restart do
-#     on roles(:app), in: :sequence, wait: 5 do
-#       invoke 'puma:restart'
-#     end
-#   end
+    before "bundler:install", "deploy:apt"
+    after "bundler:install", "deploy:rake_install"
+    after :deploy, "service:deploy"
+end
 
-#   after  :finishing,    :cleanup
-#   after  :finishing,    :restart
-# end
+namespace :service do
+    desc "Deploy Webcore Service"
+    task :deploy do
+        on roles(:app) do
+            service = ERB.new(File.read("#{File.dirname(__FILE__)}/webcore.service.erb")).result(binding)
+            upload! StringIO.new(service), "#{shared_path}/webcore.service"
+
+            start = ERB.new(File.read("#{File.dirname(__FILE__)}/webcore.sh.erb")).result(binding)
+            upload! StringIO.new(start), "#{shared_path}/webcore.sh"
+
+            execute "chmod 770 #{shared_path}/webcore.sh"
+            execute "sudo systemctl link #{shared_path}/webcore.service"
+            execute "sudo systemctl daemon-reload"
+        end
+    end
+
+    desc "Restart Webcore Service"
+    task :restart do
+        on roles(:app) do
+            execute "mkdir -p #{shared_path}/tmp/sockets"
+            execute "chown -R :www #{shared_path}/tmp 2> /dev/null || true"
+            execute "chmod -R 770 #{shared_path}/tmp 2> /dev/null || true"
+            
+            execute "sudo systemctl restart webcore.service"
+        end
+    end
+    
+    after "service:deploy", "service:restart"
+end

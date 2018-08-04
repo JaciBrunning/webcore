@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source /etc/profile.d/rvm.sh
+mkdir -p <%= shared_path %>/tmp/sockets
+<%= shared_path %>/bin/rackup -o <%= shared_path %>/tmp/sockets/webcore.sock
