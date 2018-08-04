@@ -1,5 +1,8 @@
 set :application, 'webcore'
 
+set :rvm_type, :system
+set :rvm_ruby_version, '2.3.3'
+
 set :repo_url, 'https://github.com/JacisNonsense/webcore.git'
 set :branch, 'master'
 
