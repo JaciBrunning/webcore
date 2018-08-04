@@ -1,31 +1,22 @@
-server ENV['DEPLOY_SERVER'], roles: [:web, :app, :db], primary: true
-
-set :stages, ["staging", "production"]
-set :default_stage, "production"
-
-set :user, 'deploy'
 set :application, 'webcore'
 
-set :deploy_to, '/etc/www/webcore'
-
-set :scm, 'git'
-set :repository, 'git@github.com/JacisNonsense/Webcore.git'
+set :repo_url, 'https://github.com/JacisNonsense/webcore.git'
 set :branch, 'master'
 
-default_run_options[:pty] = true
+set :user, 'deploy'
 
-namespace :service do
-  desc 'Create Directories for Socket'
-  task :make_dirs do
-    on roles(:app) do
-      execute "mkdir #{deploy_to}/tmp/sockets -p"
-    end
-  end
+# namespace :service do
+#   desc 'Create Directories for Socket'
+#   task :make_dirs do
+#     on roles(:app) do
+#       execute "mkdir #{deploy_to}/tmp/sockets -p"
+#     end
+#   end
 
-  before :start, :make_dirs
-end
+#   before :start, :make_dirs
+# end
 
-namespace :deploy do
+# namespace :deploy do
 #   desc 'Initial Deploy'
 #   task :initial do
 #     on roles(:app) do
@@ -43,4 +34,4 @@ namespace :deploy do
 
 #   after  :finishing,    :cleanup
 #   after  :finishing,    :restart
-end
+# end

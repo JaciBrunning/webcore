@@ -2,8 +2,8 @@ _build/
 _public/
 _db/
 .sass-cache
-Gemfile.lock
 .vs/
 
 node_modules
 build
+log/
