@@ -80,6 +80,7 @@ fi
 echo "Writing envfile..."
 cat <<EOM > /etc/www/webcore.env
 RACK_ENV=production
+WEBCORE_MODULE_PATH=/etc/www/webcore/modules
 EOM
 
 # Chown /etc/www to the correct group
