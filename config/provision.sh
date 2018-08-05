@@ -29,6 +29,7 @@ echo "Adding Users and Groups..."
 groupadd www
 useradd -s /usr/sbin/nologin -r -M www -g www
 usermod -aG www $ACCNAME
+usermod -aG www www-data    # Add nginx user to www group
 
 mkdir -p /etc/www
 
