@@ -9,9 +9,13 @@ server {
   access_log <%= shared_path %>/tmp/log/nginx.access.log;
   error_log <%= shared_path %>/tmp/log/nginx.error.log info;
 
+  underscores_in_headers on;
+
   location / {
-    proxy_pass_request_headers on;
     proxy_pass http://webcore;
+    proxy_set_header Host            $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_pass_request_headers on;
   }
   
   client_max_body_size 10M;

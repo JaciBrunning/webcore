@@ -1,5 +1,4 @@
 require 'rack'
-require 'json'
 $:.unshift File.dirname(__FILE__)
 
 require 'loader/loader'
@@ -16,4 +15,4 @@ LOADER.run! SERVICES
 puts "[RACKUP] Starting..."
 use Webcore::Middleware, SERVICES[:domains]
 
-run Proc.new { |env| [404, {}, ["Not Found #{JSON.generate(env)}"]] }
+run Proc.new { |env| [404, {}, ["Not Found"]] }
