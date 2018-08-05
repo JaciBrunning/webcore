@@ -104,5 +104,12 @@ psql -c "create role web with login password 'web'"
 psql -c "create database web owner web"
 EOSU
 
+# Generate DH Param for SSL
+if ! [ -f "/etc/ssl/certs/dhparam.pem" ]
+then
+echo "Generating DH Param for SSL"
+openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+fi
+
 # Done!
 echo "Webcore provisioned! Push with Capistrano."
