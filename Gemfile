@@ -2,11 +2,11 @@ source "https://rubygems.org"
 
 # Server
 gem "rack", "2.0.1"
-gem "sinatra", "2.0.2"
+gem "sinatra", "2.0.3"
 gem "thin", "1.7.2"
 gem "puma", "3.12.0"
 gem "sinatra-websocket", "0.3.1"
-gem "sinatra-contrib", "2.0.2"
+gem "sinatra-contrib", "2.0.3"
 gem "dalli", "2.7.8"
 
 # Platform
