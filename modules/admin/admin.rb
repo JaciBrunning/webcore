@@ -8,12 +8,14 @@ class AdminModule < WebcoreApp()
     set :views, "#{File.dirname(__FILE__)}/views"
 
     get "/?" do
+        https!
         auth_su!
         @title = "Admin Console"
         erb :index
     end
 
     get "/logout/?" do
+        https!
         redirect "/" unless auth?
         logout!
     end

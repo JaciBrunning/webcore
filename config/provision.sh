@@ -21,8 +21,12 @@ usermod -aG www-deploy $ACCNAME
 
 # Install necessary packages
 echo "Installing Packages..."
+cat <<EOM >> /etc/apt/sources.list.d/cert_backports.list
+deb http://ftp.debian.org/debian jessie-backports main
+EOM
 apt-get update
 apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql nginx -y
+apt-get install certbot -t jessie-backports
 
 # Create www group and users
 echo "Adding Users and Groups..."

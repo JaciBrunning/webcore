@@ -26,11 +26,13 @@ class SSOModule < WebcoreApp()
     end
 
     get "/" do
+        https!
         token = Auth::login_token(read_token)
         halt token.to_s if token.is_a?(Symbol)
     end
 
     get "/login/?" do
+        https!
         @title = "Login"
         session[:refer] = params[:refer] if params[:refer]
         redirect "/register" if Auth::User.count == 0
@@ -38,6 +40,7 @@ class SSOModule < WebcoreApp()
     end
 
     get "/logout/?" do
+        https!
         Auth::deauth_single(read_token)
         delete_token
         redirect params[:refer] if params[:refer]
@@ -46,16 +49,19 @@ class SSOModule < WebcoreApp()
     end
 
     get "/register/?" do
+        https!
         @title = "Register"
         erb :register
     end
 
     post "/register/?" do
+        https!
         Auth::create params[:username], params[:email], params[:name], params[:password], (Auth::User.count == 0)
         redirect "/login"
     end
 
     post "/login" do
+        https!
         login = params[:login]
         password = params[:password]
 

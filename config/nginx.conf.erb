@@ -2,6 +2,39 @@ upstream webcore {
   server unix:<%= shared_path %>/tmp/sockets/webcore.sock;
 }
 
+<%# TODO: Need to generalize this config, or allow the user to configure the Capistrano servers %>
+<% if fetch(:stage).to_sym == :production %>
+server {
+  listen 443 default ssl;
+  server_name "";
+
+  ssl_certificate     /etc/letsencrypt/live/imjac.in/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/imjac.in/privkey.pem;
+
+  access_log <%= shared_path %>/tmp/log/nginx.access.log;
+  error_log <%= shared_path %>/tmp/log/nginx.error.log info;
+
+  underscores_in_headers on;
+
+  location / {
+    proxy_pass http://webcore;
+    proxy_set_header Host            $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_pass_request_headers on;
+  }
+  
+  client_max_body_size 10M;
+  keepalive_timeout 10;
+}
+<% else %>
+server {
+  listen 443;
+  server_name "";
+
+  rewrite ^(.*) http://$host$1 permanent
+}
+<% end %>
+
 server {
   listen 80;
   server_name "";

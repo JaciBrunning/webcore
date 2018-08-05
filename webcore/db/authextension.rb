@@ -9,8 +9,14 @@ module Webcore
                 if request.port != 80 && request.port != 443
                     portstr = ":#{request.port}"
                 end
+                httpsstr = "https"
+                httpsstr = "http" if settings.development?
                 # TODO: Escape
-                redirect "http://auth.#{services[:domains].rootdomain}#{portstr}/#{pagestr}?refer=#{refer}"
+                redirect "#{httpsstr}://auth.#{services[:domains].rootdomain}#{portstr}/#{pagestr}?refer=#{refer}"
+            end
+
+            def https!
+                redirect "https://#{request.host}/#{request.fullpath}" unless (request.secure? || settings.development?)
             end
 
             def auth?
