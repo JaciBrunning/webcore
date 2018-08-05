@@ -26,6 +26,9 @@ gem "json", "2.0.4"
 gem "wisper", "2.0.0"
 gem "tzinfo", "1.2.5"
 
+# TODO: Loader other Gemfiles from here
+gem "icalendar", "2.3.0"
+
 # Deployment
 group :development do
     gem 'capistrano',         require: false
