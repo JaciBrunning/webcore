@@ -47,11 +47,13 @@ module Webcore
             app.set :cookie_options, domain: ".#{app.services[:domains].rootdomain}"
 
             app.before do
-                tok = Security.decrypt(cookies[:webcore_token], app.services[:sso].secret)
-                @auth_token = Auth.login_token(tok)
-                @user = @auth_token.is_a?(Symbol) ? nil : @auth_token.user
+                unless cookies[:webcore_token].nil?
+                    tok = Security.decrypt(cookies[:webcore_token], app.services[:sso].secret)
+                    @auth_token = Auth.login_token(tok)
+                    @user = @auth_token.is_a?(Symbol) ? nil : @auth_token.user
 
-                cookies.delete :webcore_token if @user.nil? # Cleanup if the login failed
+                    cookies.delete :webcore_token if @user.nil? # Cleanup if the login failed
+                end
             end
         end
     end

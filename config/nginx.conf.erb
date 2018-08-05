@@ -45,6 +45,10 @@ server {
 
   underscores_in_headers on;
 
+  location /.well-known/acme-challenge {
+    root /var/www/letsencrypt;
+  }
+
   location / {
     proxy_pass http://webcore;
     proxy_set_header Host            $host;

@@ -12,7 +12,7 @@ class SSOModule < WebcoreApp()
     set :cookie_options, domain: ".#{services[:domains].rootdomain}"
 
     register ::Webcore::CDNExtension
-    helpers ::Webcore::AuthExtension::Helpers
+    register ::Webcore::AuthExtension
     set :root, File.dirname(__FILE__)
 
     def write_token tok
@@ -27,14 +27,16 @@ class SSOModule < WebcoreApp()
         cookies.delete :webcore_token
     end
 
-    get "/" do
+    before do
         https!
+    end
+
+    get "/" do
         token = Auth::login_token(read_token)
         halt token.to_s if token.is_a?(Symbol)
     end
 
     get "/login/?" do
-        https!
         @title = "Login"
         session[:refer] = params[:refer] if params[:refer]
         redirect "/register" if Auth::User.count == 0
@@ -42,7 +44,6 @@ class SSOModule < WebcoreApp()
     end
 
     get "/logout/?" do
-        https!
         Auth::deauth_single(read_token)
         delete_token
         redirect params[:refer] if params[:refer]
@@ -51,19 +52,16 @@ class SSOModule < WebcoreApp()
     end
 
     get "/register/?" do
-        https!
         @title = "Register"
         erb :register
     end
 
     post "/register/?" do
-        https!
         Auth::create params[:username], params[:email], params[:name], params[:password], (Auth::User.count == 0)
         redirect "/login"
     end
 
     post "/login" do
-        https!
         login = params[:login]
         password = params[:password]
 
