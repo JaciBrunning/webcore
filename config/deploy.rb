@@ -54,7 +54,7 @@ namespace :service do
             execute "rm /etc/nginx/sites-enabled/default 2> /dev/null || true"
             execute "ln -nfs #{shared_path}/nginx.conf /etc/nginx/sites-enabled/webcore"
 
-            execute "sudo systemctl link #{shared_path}/webcore.service"
+            execute "sudo systemctl enable #{shared_path}/webcore.service"
             execute "sudo systemctl daemon-reload"
         end
     end
