@@ -1,4 +1,5 @@
 require 'webcore/cdn/extension'
+require 'webcore/db/authextension'
 require 'webcore/db/auth'
 require 'sinatra/cookies'
 
@@ -11,6 +12,7 @@ class SSOModule < WebcoreApp()
     set :cookie_options, domain: ".#{services[:domains].rootdomain}"
 
     register ::Webcore::CDNExtension
+    helpers ::Webcore::AuthExtension::Helpers
     set :root, File.dirname(__FILE__)
 
     def write_token tok
