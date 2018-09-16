@@ -25,7 +25,7 @@ cat <<EOM >> /etc/apt/sources.list.d/cert_backports.list
 deb http://ftp.debian.org/debian jessie-backports main
 EOM
 apt-get update
-apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql nginx -y
+apt-get install git curl dirmngr openssh-server net-tools sudo build-essential postgresql nginx software-properties-common -y
 apt-get install certbot -t jessie-backports
 
 # Create www group and users
@@ -110,6 +110,11 @@ then
 echo "Generating DH Param for SSL"
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 fi
+
+# Install NodeJS
+echo "Installing NodeJS"
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+apt-get -y install nodejs
 
 # Done!
 echo "Webcore provisioned! Push with Capistrano."
