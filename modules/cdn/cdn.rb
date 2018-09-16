@@ -12,7 +12,7 @@ class CDNModule < WebcoreApp()
         redirect "/cdn/#{resource}"
     end
 
-    fa = RedirectResource.new(:"fontawesome.css", "http://use.fontawesome.com/releases/v5.1.0/css/all.css")
+    fa = RedirectResource.new(:"fontawesome.css", "https://use.fontawesome.com/releases/v5.1.0/css/all.css")
     fa.memcache = true
     services[:cdn].register fa
 
