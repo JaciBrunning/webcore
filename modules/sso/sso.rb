@@ -81,7 +81,13 @@ end
 class SSOService
     attr_accessor :secret
     def initialize
-        @secret = SecureRandom.hex(64)
+        if ENV['RACK_ENV'] == "development"
+            puts "YOU ARE IN DEVELOPMENT MODE."
+            puts "SSO SECRETS ARE UNSAFE HERE."
+            @secret = "DEADBEEFDEADBEEF" 
+        else
+            @secret = SecureRandom.hex(64)
+        end
     end
 end
 

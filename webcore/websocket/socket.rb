@@ -17,9 +17,15 @@ module Websocket
             @data  = {}
             @onConnTmp = []
 
-            @ws.onopen { on_open }
-            @ws.onmessage { |msg| on_msg msg }
-            @ws.onclose { on_close }
+            @ws.on :open do
+                on_open
+            end
+            @ws.on :message do |event| 
+                on_msg event.data
+            end
+            @ws.on :close do 
+                on_close
+            end
         end
 
         def on_open
@@ -33,6 +39,9 @@ module Websocket
                 json = JSON.parse(msg)
                 if json['type'] == 'types' && json['action'] == 'identify'
                     @types << json['data'].to_sym
+                    if ENV['RACK_ENV'] == 'development'
+                        puts "[WSOCK] WS Idenitifed Types: #{json['data']}"
+                    end
                 else
                     @driver.on_msg(json['type'].to_sym, json['action'].to_sym, json['data'], self)
                 end
