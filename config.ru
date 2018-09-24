@@ -1,5 +1,6 @@
 require 'rack'
 $:.unshift File.dirname(__FILE__)
+puts "Loading from: #{$:}"
 
 require 'loader/loader'
 require 'webcore/services'
