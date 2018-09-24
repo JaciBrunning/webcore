@@ -13,7 +13,7 @@ gem "dalli", "2.7.8"
 gem "rake", "12.3.1"
 
 # CDN
-gem "sass", "3.4.22"
+gem "sass", ">=3.5.7"
 
 # Database
 gem "pg", "0.21.0"
@@ -35,7 +35,7 @@ require 'loader/loader'
 Webcore::Loader.new.run_configs!.each do |cfg|
     if cfg.gemfile
         puts "Adding Gemfile Dependencies: #{cfg.gemfile}"
-        load cfg.gemfile
+        eval File.read(cfg.gemfile)
     end
 end
 
