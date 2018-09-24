@@ -1,5 +1,8 @@
 require 'rack'
 $:.unshift File.dirname(__FILE__)
+if ENV['WEBCORE_LOADPATH']
+  ENV['WEBCORE_LOADPATH'].split(';').each { |x| $:.unshift(x) }
+end
 puts "Loading from: #{$:}"
 
 require 'loader/loader'

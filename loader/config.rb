@@ -5,7 +5,6 @@ module Webcore
         attr_accessor :host
         attr_accessor :priority
         attr_accessor :group
-        attr_accessor :gemfile
 
         # TODO
         attr_accessor :dependsOn
@@ -19,7 +18,6 @@ module Webcore
             @dependsOn = []
             @apt = []
             @group = nil
-            @gemfile = nil
         end
     end
 end
