@@ -34,8 +34,8 @@ $:.unshift File.dirname(__FILE__)
 require 'loader/loader'
 Webcore::Loader.new.run_configs!.each do |cfg|
     if cfg.gemfile
-        puts "Adding Gemfile Dependencies: #{cfg.file} - #{cfg.gemfile}"
-        load File.join(cfg.file, cfg.gemfile)
+        puts "Adding Gemfile Dependencies: #{cfg.gemfile}"
+        load cfg.gemfile
     end
 end
 
