@@ -8,6 +8,10 @@ set :branch, 'master'
 
 set :user, 'deploy'
 
+set :default_env, { 
+    'WEBCORE_MODULE_PATH' => '/etc/www/webcore/modules'
+}
+
 # Allows us to access rackup from services
 set :bundle_binstubs, -> { shared_path.join('bin') }
 

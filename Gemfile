@@ -29,6 +29,16 @@ gem "tzinfo", "1.2.5"
 # TODO: Loader other Gemfiles from here
 gem "icalendar", "2.3.0"
 
+# Module deps
+$:.unshift File.dirname(__FILE__)
+require 'loader/loader'
+Webcore::Loader.new.run_configs!.each do |cfg|
+    if cfg.gemfile
+        puts "Adding Gemfile Dependencies: #{cfg.file} - #{cfg.gemfile}"
+        load File.join(cfg.file, cfg.gemfile)
+    end
+end
+
 # Deployment
 group :development do
     gem 'capistrano',         require: false
