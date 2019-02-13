@@ -6,6 +6,8 @@ module Webcore
             puts "WARNING: DEV MODE!"
         end
 
+        set :protection, :except => [:frame_options, :json_csrf]
+
         module ClassMethods
             attr_reader :this_module
 
